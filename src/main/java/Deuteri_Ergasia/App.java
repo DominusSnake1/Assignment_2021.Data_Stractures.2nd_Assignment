@@ -31,7 +31,7 @@ public class App {
             Hash.put(25,25);
             Hash.printHashTable();
 
-            Hash.remove(1);
+            System.out.println("Removed value: " + Hash.remove(15));
             Hash.printHashTable();
 
             Hash.remove(20);

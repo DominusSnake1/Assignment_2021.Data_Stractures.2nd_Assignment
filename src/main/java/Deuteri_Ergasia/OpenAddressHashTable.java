@@ -135,11 +135,11 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
       }
 
       public void printHashTable() {
-            for (int i = 0; i < this.HashTable.length; i++) {
-                  if (this.HashTable[i] == null) {
+            for (HashNode<K, V> Node : this.HashTable) {
+                  if (Node == null) {
                         System.out.print("null ");
                   } else {
-                        System.out.print(this.HashTable[i].key.toString() + ":" + this.HashTable[i].value.toString() + " ");
+                        System.out.print(Node.key.toString() + ":" + Node.value.toString() + " ");
                   }
             }
             System.out.println();
