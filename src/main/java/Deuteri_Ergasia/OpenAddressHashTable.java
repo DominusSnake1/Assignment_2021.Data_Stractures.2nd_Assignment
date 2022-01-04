@@ -1,6 +1,7 @@
 package Deuteri_Ergasia;
 
 import java.util.Iterator;
+import java.util.Random;
 
 public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
 
@@ -16,12 +17,26 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
       }
 
       private int hash(K key) {return key.hashCode() % HashTable.length;}
+      
+      private int newHashFunction(K key) {
+            int[][] BxUMatrix = generateBxUMatrix(key);
+            String keyBinary = keyToBinaryString(key);
+            StringBuilder integerBinary = new StringBuilder();
+
+            for (int i = 0; i < BxUMatrix.length; i++) {
+                  for (int j = 0; j < BxUMatrix[i].length; j++) {
+                        integerBinary.setCharAt(i, multiplyMatrixCells(BxUMatrix, keyBinary, i));
+                  }
+            }
+
+            return (binaryStringToInteger(String.valueOf(integerBinary)) % HashTable.length);
+      }
 
       @Override
       public void put(K key, V value) {
             if (isFull()) {doubleCapacity();}
 
-            int i = hash(key);
+            int i = newHashFunction(key);
 
             HashNode<K, V> temp;
 
@@ -34,7 +49,7 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
                   i = (i + 1) % HashTable.length;
             }
 
-            HashTable[i] = new HashNode<>(hash(key), key, value);
+            HashTable[i] = new HashNode<>(newHashFunction(key), key, value);
             current_size++;
 
 
@@ -51,7 +66,7 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
                   System.exit(2);
             }
 
-            int i = hash(key);
+            int i = newHashFunction(key);
             while (HashTable[i] == null) {
                   i = (i + 1) % HashTable.length;
             }
@@ -72,7 +87,7 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
 
       @Override
       public V get(K key) {
-            int i = hash(key);
+            int i = newHashFunction(key);
 
             while (HashTable[i] == null) {
                   i = (i + 1) % HashTable.length;
@@ -85,6 +100,48 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
                   i = (i + 1) % HashTable.length;
             }
             return null;
+      }
+
+      public String keyToBinaryString(K key) {
+            return (Integer.toBinaryString((Integer) key));
+      }
+
+      public int binaryStringToInteger(String binaryString) {
+            return (Integer.parseInt(binaryString, 2));
+      }
+
+      public int random0or1() {
+            Random random = new Random();
+
+            return random.nextInt(2);
+      }
+
+      public int[][] generateBxUMatrix(K key) {
+            int u = keyToBinaryString(key).length();
+            int b = (int) Math.sqrt(HashTable.length);
+
+            int[][] BxUMatrix = new int[b][u];
+
+            for (int i = 0; i < b; i++) {
+                  for (int j = 0; j < u; j++) {
+                        BxUMatrix[i][j] = random0or1();
+                  }
+            }
+
+            return BxUMatrix;
+      }
+
+      public char multiplyMatrixCells(int[][] BxUMatrix, String X, int row) {
+            int result = 0;
+
+            for (int i = 0; i < X.length(); i++) {
+                  if (BxUMatrix[row][i] == 0 || X.charAt(i) == 0) {
+                        result += BxUMatrix[row][i] * X.charAt(i);
+                  }
+            }
+            result = result % 2;
+
+            return (char) result;
       }
 
       @Override
