@@ -21,7 +21,9 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
       private int newHashFunction(K key) {
             int[][] BxUMatrix = generateBxUMatrix(key);
             String keyBinary = keyToBinaryString(key);
+
             StringBuilder integerBinary = new StringBuilder();
+            integerBinary.setLength(BxUMatrix.length);
 
             for (int i = 0; i < BxUMatrix.length; i++) {
                   for (int j = 0; j < BxUMatrix[i].length; j++) {
@@ -139,9 +141,9 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
                         result += BxUMatrix[row][i] * X.charAt(i);
                   }
             }
-            result = result % 2;
+            result = (result%2);
 
-            return (char) result;
+            return ((char) result);
       }
 
       @Override

@@ -5,11 +5,12 @@ public class App {
       public static void main(String[] args) {
             OpenAddressHashTable<Integer,Integer> Hash = new OpenAddressHashTable<>();
 
-            Hash.printHashTable();
+            //Hash.printHashTable();
 
             Hash.put(0,0);
             Hash.printHashTable();
 
+            /*
             Hash.put(0,1);
             Hash.printHashTable();
 
@@ -41,6 +42,6 @@ public class App {
             Hash.printHashTable();
 
             Hash.put(25,25);
-            Hash.printHashTable();
+            Hash.printHashTable();*/
       }
 }
