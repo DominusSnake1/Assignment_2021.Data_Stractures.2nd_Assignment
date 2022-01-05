@@ -1,10 +1,8 @@
 package Deuteri_Ergasia;
 
 //region Imports
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
+
 import static java.lang.String.valueOf;
 //endregion
 
@@ -14,29 +12,46 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
 
       private int current_size;
       private HashNode<K, V>[] HashTable;
-      int[][] BxUMatrix = generateBxUMatrix();
+      int[][] BxUMatrix;
 
       @SuppressWarnings("unchecked")
       public OpenAddressHashTable() {
             this.current_size = 0;
             this.HashTable = new HashNode[INITIAL_SIZE];
+            this.BxUMatrix  = generateBxUMatrix();
       }
 
       //private int hash(K key) {return key.hashCode() % HashTable.length;}
       
-      private int newHashFunction(K key) {
-            String keyBinary = keyToBinaryString(key);
-            BitSet integerBinary = new BitSet((int) Math.sqrt(HashTable.length));
+      private int newHashFunction(K key)
+      {
+            String keyInBinaryFormat = keyToBinaryString(key);
+            int[][] CurrentBinaryMMatrix = BxUMatrix;
+            String Index = "";
 
-            for (int i = 0; i < BxUMatrix.length; i++) {
-                  for (int j = 0; j < BxUMatrix[i].length; j++) {
 
+            Integer [] CurrentKeyMatrixInBinaryFormat = new Integer[32];
+            System.out.println(keyInBinaryFormat);
+            for(int j=0 ; j<keyInBinaryFormat.length() ; j++)
+            {
+                  CurrentKeyMatrixInBinaryFormat[j] = keyInBinaryFormat.charAt(j)-48;
+            }
+            Collections.reverse(Arrays.asList(CurrentKeyMatrixInBinaryFormat));
+            for(int l = 0; l < 32 ; l++)
+            {
+                  if(CurrentKeyMatrixInBinaryFormat[l]==null)
+                  {
+                        CurrentKeyMatrixInBinaryFormat[l]=0;
                   }
             }
-
-            System.out.println("integerBinary: " + integerBinary);
-
-            return (binaryStringToInteger(String.valueOf(integerBinary)) % HashTable.length);
+            //System.out.println("Array after is : " + Arrays.toString(CurrentKeyMatrixInBinaryFormat));
+            //System.out.println("Our M matrix is: " + Arrays.deepToString(CurrentBinaryMMatrix));
+            for (int i = 0; i < CurrentBinaryMMatrix.length; i++)
+            {
+                  Index = Index + multiplyMatrixCells(CurrentBinaryMMatrix, CurrentKeyMatrixInBinaryFormat, i);
+            }
+            System.out.println("Index is: " + binaryStringToInteger(Index) + " And key you are inserting is: " + key.hashCode());
+            return (binaryStringToInteger(Index) % HashTable.length);
       }
 
       @Override
@@ -109,7 +124,7 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
       }
 
       public String keyToBinaryString(K key) {
-            return (Integer.toBinaryString((Integer) key));
+            return (Integer.toBinaryString((key.hashCode())));
       }
 
       public int binaryStringToInteger(String binaryString) {
@@ -124,6 +139,7 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
 
       public int[][] generateBxUMatrix() {
             int u = 32;
+            assert HashTable != null;
             int b = (int) Math.sqrt(HashTable.length);
 
             int[][] BxUMatrix = new int[b][u];
@@ -137,18 +153,17 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
             return BxUMatrix;
       }
 
-      public String multiplyMatrixCells(int[][] BxUMatrix, String X, int row) {
+      public String multiplyMatrixCells(int[][] BxUMatrix, Integer[] X, int row)
+      {
             int result = 0;
 
-            for (int i = 0; i < X.length(); i++) {
-                  if (BxUMatrix[row][i] == 0 || X.charAt(i) == 0) {
-                        result += (BxUMatrix[row][i] * (int) X);
-                  }
+            for (int k = 0; k < X.length; k++)
+            {
+                  result = result + (BxUMatrix[row][k] * X[k]);
             }
-
-            System.out.println("X: " + X);
             result %= 2;
-            System.out.println("result: " + result);
+
+            //System.out.println("The result is: " + result);
 
             return valueOf(result);
       }
@@ -170,9 +185,11 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
       public void clear() {current_size = 0;}
 
       @Override
-      public Iterator<Entry<K, V>> iterator() {return null;}
+      public Iterator<Deuteri_Ergasia.Dictionary.Entry<K, V>> iterator() {
+            return null;
+      }
 
-       @SuppressWarnings("unchecked")
+      @SuppressWarnings("unchecked")
       private void doubleCapacity() {
             HashNode<K, V>[] oldHashTable = HashTable;
 

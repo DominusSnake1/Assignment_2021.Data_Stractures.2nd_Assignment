@@ -22,31 +22,20 @@ public class App {
             Hash.put(10,2);
             Hash.printHashTable();
 
-            Hash.put(15,5);
+            Hash.put(26,5);
             Hash.printHashTable();
 
-            Hash.put(20,2);
+            Hash.put(1532,5);
             Hash.printHashTable();
 
-            Hash.put(25,5);
+            Hash.put(23,2);
             Hash.printHashTable();
 
-            Hash.put(30,2);
+            Hash.put(32,2);
             Hash.printHashTable();
 
-            Hash.put(35,5);
+            Hash.put(49,5);
             Hash.printHashTable();
 
-            Hash.remove(25);
-            Hash.printHashTable();
-
-            Hash.remove(1);
-            Hash.printHashTable();
-
-            Hash.remove(30);
-            Hash.printHashTable();
-
-            Hash.remove(10);
-            Hash.printHashTable();
       }
 }
