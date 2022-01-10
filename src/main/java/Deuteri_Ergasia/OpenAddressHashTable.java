@@ -1,12 +1,11 @@
 package Deuteri_Ergasia;
 
-//region Imports
+//region Imports & Utils
 import java.util.*;
-
 import static java.lang.String.valueOf;
 //endregion
 
-public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
+public class OpenAddressHashTable<K, V> implements Dictionary<K, V>, Dictionary.Entry<K, V> {
 
       //region Fields
       private static final int INITIAL_SIZE = 4;
@@ -29,7 +28,7 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
       private int newHashFunction(K key) {
             String keyInBinaryFormat = keyToBinaryString(key);
             int[][] CurrentBxUMatrix = BxUMatrix;
-            String Index = "";
+            StringBuilder temp = new StringBuilder();
 
             Integer [] CurrentKeyMatrixInBinaryFormat = new Integer[32];
             for(int j=0 ; j<keyInBinaryFormat.length() ; j++) {
@@ -45,8 +44,10 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
             }
 
             for (int i = 0; i < CurrentBxUMatrix.length; i++) {
-                  Index += multiplyMatrixCells(CurrentBxUMatrix, CurrentKeyMatrixInBinaryFormat, i);
+                  temp.append(multiplyMatrixCells(CurrentBxUMatrix, CurrentKeyMatrixInBinaryFormat, i));
             }
+
+            String Index = temp.toString();
 
             return (binaryStringToInteger(Index) % HashTable.length);
       }
@@ -202,7 +203,9 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
 
       //region Iterator
       @Override
-      public Iterator<Deuteri_Ergasia.Dictionary.Entry<K, V>> iterator() {return null;}
+      public Iterator<Dictionary.Entry<K, V>> iterator() {
+            return null;
+      }
       //endregion
 
       //region doubleCapacity
@@ -254,6 +257,22 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
       }
       //endregion
 
+      //region getKey
+      @Override
+      public K getKey() {
+            Object temp;;
+            return null;
+      }
+      //endregion
+
+      //region getValue
+      @Override
+      public V getValue() {
+            Object temp;
+            return null;
+      }
+      //endregion
+
       //region HashNode
       static class HashNode<K, V> {
             final int hash;
@@ -267,5 +286,51 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
             }
       }
       //endregion
+      //endregion
+
+      //region "Entry" Class
+      private static class Entry<K, V> implements Dictionary.Entry<K, V> {
+
+            private K key;
+            private V value;
+
+            public Entry(K key, V value) {
+                  this.key = key;
+                  this.value = value;
+            }
+
+            @Override
+            public K getKey() {
+                  return key;
+            }
+
+            @Override
+            public V getValue() {
+                  return value;
+            }
+      }
+      //endregion
+
+      //region "HashIterator" Class
+      private class HashIterator implements Iterator<Entry<K, V>> {
+
+            private int i;
+            private Iterator<Entry<K, V>> it;
+
+            public HashIterator() {
+                  i = 0;
+                  //it = HashTable[0].iterator();
+            }
+
+            @Override
+            public boolean hasNext() {
+                  return false;
+            }
+
+            @Override
+            public Entry<K, V> next() {
+                  return null;
+            }
+      }
       //endregion
 }
