@@ -1,41 +1,60 @@
 package Deuteri_Ergasia;
-
+import java.util.Scanner;
 public class App {
-
+      static Scanner Input = new Scanner(System.in);
       public static void main(String[] args) {
-            OpenAddressHashTable<Integer,Integer> Hash = new OpenAddressHashTable<>();
+            OpenAddressHashTable<String,Integer> Hash = new OpenAddressHashTable<>();
 
             Hash.printHashTable();
 
-            Hash.put(0,0);
+            String TextToCheck = Input.nextLine();
+            int counter = 0;
+
+            for(int i = 0 ; i < TextToCheck.length() ; i++)
+            {
+                  char temp = TextToCheck.charAt(i);
+                  //System.out.println(temp);
+                  for (int j = 0 ; j < TextToCheck.length() ; j++)
+                  {
+                        if(temp == TextToCheck.charAt(j))
+                        {
+                              counter++;
+                        }
+                  }
+                  //System.out.println(counter);
+                  Hash.put(String.valueOf(TextToCheck.charAt(i)), counter);
+                  counter = 0;
+            }
+            Hash.printHashTable();
+            /*Hash.put(Input.nextLine(),0);
             Hash.printHashTable();
 
-            Hash.put(0,1);
+            Hash.put("BB",1);
             Hash.printHashTable();
 
-            Hash.put(1,2);
+            Hash.put("CB",2);
             Hash.printHashTable();
 
-            Hash.put(4,5);
+            Hash.put("DB",5);
             Hash.printHashTable();
 
-            Hash.put(10,2);
+            Hash.put("E",2);
             Hash.printHashTable();
 
-            Hash.put(26,5);
+            Hash.put("F",5);
             Hash.printHashTable();
 
-            Hash.put(1532,5);
+            Hash.put("G",5);
             Hash.printHashTable();
 
-            Hash.put(23,2);
+            Hash.put("H",2);
             Hash.printHashTable();
 
-            Hash.put(32,2);
+            Hash.put("I",2);
             Hash.printHashTable();
 
-            Hash.put(49,5);
-            Hash.printHashTable();
+            Hash.put("J",5);
+            Hash.printHashTable();*/
 
       }
 }

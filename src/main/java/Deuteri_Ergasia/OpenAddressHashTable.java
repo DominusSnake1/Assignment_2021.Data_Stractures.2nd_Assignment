@@ -50,7 +50,9 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
             {
                   Index = Index + multiplyMatrixCells(CurrentBinaryMMatrix, CurrentKeyMatrixInBinaryFormat, i);
             }
-            System.out.println("Index is: " + binaryStringToInteger(Index) + " And key you are inserting is: " + key.hashCode());
+
+            //System.out.println("Index is: " + binaryStringToInteger(Index) + " And key you are inserting is: " + key.hashCode());
+
             return (binaryStringToInteger(Index) % HashTable.length);
       }
 
@@ -192,6 +194,7 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
       @SuppressWarnings("unchecked")
       private void doubleCapacity() {
             HashNode<K, V>[] oldHashTable = HashTable;
+            BxUMatrix = generateBxUMatrix();
 
             int newLength = (HashTable.length * 2);
             HashTable = new HashNode[newLength];
@@ -202,15 +205,16 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
                         put(HashNode.key, HashNode.value);
                   }
             }
-
-             BxUMatrix = generateBxUMatrix();
       }
 
       @SuppressWarnings("unchecked")
       private void halfCapacity() {
             HashNode<K, V>[] oldHashTable = HashTable;
+            BxUMatrix = generateBxUMatrix();
+
             int newLength = (HashTable.length / 2);
             HashTable = new HashNode[newLength];
+
             current_size = 0;
             for (HashNode<K, V> hashNode : oldHashTable) {
                   if (hashNode != null) {
@@ -218,7 +222,6 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
                   }
             }
 
-            BxUMatrix = generateBxUMatrix();
       }
 
       public void printHashTable() {
