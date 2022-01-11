@@ -1,6 +1,8 @@
 package Deuteri_Ergasia;
 
 //region Imports & Utils
+import com.sun.jdi.Value;
+
 import java.util.*;
 import static java.lang.String.valueOf;
 //endregion
@@ -31,6 +33,7 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V>, Dictionary.
             StringBuilder temp = new StringBuilder();
 
             Integer [] CurrentKeyMatrixInBinaryFormat = new Integer[32];
+
             for(int j=0 ; j<keyInBinaryFormat.length() ; j++) {
                   CurrentKeyMatrixInBinaryFormat[j] = keyInBinaryFormat.charAt(j)-48;
             }
@@ -56,24 +59,22 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V>, Dictionary.
       //region put
       @Override
       public void put(K key, V value) {
-            if (isFull()) {doubleCapacity();}
-
             int i = newHashFunction(key);
-            int hash = i;
 
-            HashNode<K, V> temp;
-
-            while ((temp = HashTable[i]) != null) {
-
-                  if (i == temp.hash && temp.key.equals(key)) {
-                        HashTable[i].value = value;
-                        return;
+            if (contains(key)) {
+                  while (!(HashTable[i].key.equals(key))) {
+                        i = (i + 1) % HashTable.length;
                   }
-                  i = (i + 1) % HashTable.length;
+                  HashTable[i].value = value;
+            } else {
+                  while (HashTable[i] != null) {
+                        i = (i + 1) % HashTable.length;
+                  }
+                  HashTable[i] = new HashNode<>(i, key, value);
+                  current_size++;
             }
 
-            HashTable[i] = new HashNode<>(hash, key, value);
-            current_size++;
+            if (isFull()) {doubleCapacity();}
       }
       //endregion
 
@@ -113,8 +114,10 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V>, Dictionary.
       public V get(K key) {
             int i = newHashFunction(key);
 
-            while (HashTable[i] == null) {
-                  i = (i + 1) % HashTable.length;
+            if (!isEmpty()){
+                  while (HashTable[i] == null) {
+                        i = (i + 1) % HashTable.length;
+                  }
             }
 
             while (HashTable[i] != null) {
@@ -255,20 +258,14 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V>, Dictionary.
             }
             System.out.println();
       }
-      //endregion
 
-      //region getKey
       @Override
       public K getKey() {
-            Object temp;;
             return null;
       }
-      //endregion
 
-      //region getValue
       @Override
       public V getValue() {
-            Object temp;
             return null;
       }
       //endregion

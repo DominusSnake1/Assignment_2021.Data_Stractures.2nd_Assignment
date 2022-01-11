@@ -1,32 +1,37 @@
 package Deuteri_Ergasia;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class App {
       static Scanner Input = new Scanner(System.in);
 
-      public static void main(String[] args) {
+      public static void main(String[] args) throws Exception {
             OpenAddressHashTable<String,Integer> Hash = new OpenAddressHashTable<>();
 
-            Hash.printHashTable();
+            FileReader file = new FileReader("src/main/java/Deuteri_Ergasia/Test.txt");
+            BufferedReader reader = new BufferedReader(file);
 
-            String TextToCheck = Input.nextLine();
-            int counter = 0;
+            String protasi = reader.readLine();
 
-            for (int i = 0; i < TextToCheck.length(); i++) {
-                  char temp = TextToCheck.charAt(i);
-                  for (int j = 0; j < TextToCheck.length(); j++) {
-                        if (temp == TextToCheck.charAt(j)) {
-                              counter++;
+            String[] words = protasi.split("\\W");
+
+            protasi = protasi.toLowerCase();
+
+            while (protasi != null) {
+                  for (String word : words) {
+                        if (Hash.get(word) != null) {
+                              Hash.put(word, (Hash.get(word) + 1));
+                        } else {
+                              Hash.put(word, 1);
                         }
                   }
-
-                  if (!(Hash.contains(Character.toString(TextToCheck.charAt(i))))) {
-                        Hash.put(Character.toString(TextToCheck.charAt(i)), counter);
-                  }
-
-                  counter = 0;
+                  protasi = reader.readLine();
             }
+
+            reader.close();
 
             Hash.printHashTable();
       }
