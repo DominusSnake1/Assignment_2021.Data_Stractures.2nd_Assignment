@@ -1,38 +1,41 @@
 package Deuteri_Ergasia;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class App {
       static Scanner Input = new Scanner(System.in);
 
       public static void main(String[] args) throws Exception {
             OpenAddressHashTable<String,Integer> Hash = new OpenAddressHashTable<>();
+            File file = new File("src/main/java/Deuteri_Ergasia/Test.txt");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
 
-            FileReader file = new FileReader("src/main/java/Deuteri_Ergasia/Test.txt");
-            BufferedReader reader = new BufferedReader(file);
+            String protasi;
 
-            String protasi = reader.readLine();
-
-            String[] words = protasi.split("\\W");
-
-            protasi = protasi.toLowerCase();
-
-            while (protasi != null) {
-                  for (String word : words) {
-                        if (Hash.get(word) != null) {
-                              Hash.put(word, (Hash.get(word) + 1));
-                        } else {
+            while ((protasi = reader.readLine()) != null)
+            {
+                  protasi = protasi.toLowerCase();
+                  String[] words = protasi.split("\\W");
+                  for(String word : words)
+                  {
+                        if(Hash.get(word) != null)
+                        {
+                              Hash.put(word, (Hash.get(word) + 1) );
+                        }
+                        else
+                        {
                               Hash.put(word, 1);
                         }
                   }
-                  protasi = reader.readLine();
             }
-
+            Hash.printHashTable();
             reader.close();
 
-            Hash.printHashTable();
+
       }
 }

@@ -135,7 +135,7 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V>, Dictionary.
       //endregion
 
       //region binaryStringToInteger
-      public int binaryStringToInteger(String binaryString) {return (Integer.parseInt(binaryString));}
+      public int binaryStringToInteger(String binaryString) {return (Integer.parseInt(binaryString, 2));}
       //endregion
 
       //region random0or1
