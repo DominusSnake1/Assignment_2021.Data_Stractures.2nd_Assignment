@@ -2,6 +2,7 @@ package Deuteri_Ergasia;
 
 import org.testng.annotations.Test;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -61,9 +62,32 @@ public class OpenAddressHashTableTest {
       }
 
       @Test
-      public void Test3() {
-            OpenAddressHashTable<Integer, Integer> HashMap = new OpenAddressHashTable<>();
+      public void Test3() throws IOException {
+            OpenAddressHashTable<String, Integer> HashMap = new OpenAddressHashTable<>();
+            File file = new File("src/main/java/Deuteri_Ergasia/TextDocument.txt");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
 
+            String sentence;
+
+            HashMap.printHashTable();
+
+            System.out.println("Current size: " + HashMap.size());
+
+            while ((sentence = reader.readLine()) != null) {
+                  sentence = sentence.toLowerCase();
+                  String[] words = sentence.split("\\W");
+                  for (String word : words) {
+                        if (HashMap.get(word) != null) {
+                              HashMap.put(word, (HashMap.get(word) + 1) );
+                        } else {
+                              HashMap.put(word, 1);
+                        }
+                  }
+            }
+            reader.close();
+            assertEquals(37, (int) HashMap.get("never"));
+            assertEquals(39, (int) HashMap.get("gonna"));
+            assertEquals(6, (int) HashMap.get("cry"));
 
       }
 }
