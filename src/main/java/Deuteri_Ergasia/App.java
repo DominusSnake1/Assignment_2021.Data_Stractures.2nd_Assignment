@@ -7,17 +7,17 @@ import java.io.FileReader;
 public class App {
       public static void main(String[] args) throws Exception {
             OpenAddressHashTable<String,Integer> Hash = new OpenAddressHashTable<>();
-            File file = new File("src/main/java/Deuteri_Ergasia/Test.txt");
+            File file = new File("src/main/java/Deuteri_Ergasia/TextDocument.txt");
             BufferedReader reader = new BufferedReader(new FileReader(file));
 
-            String protasi;
+            String sentence;
 
             Hash.printHashTable();
             System.out.println("Current size: " + Hash.size());
 
-            while ((protasi = reader.readLine()) != null) {
-                  protasi = protasi.toLowerCase();
-                  String[] words = protasi.split("\\W");
+            while ((sentence = reader.readLine()) != null) {
+                  sentence = sentence.toLowerCase();
+                  String[] words = sentence.split("\\W");
                   for (String word : words) {
                         if (Hash.get(word) != null) {
                               Hash.put(word, (Hash.get(word) + 1) );
