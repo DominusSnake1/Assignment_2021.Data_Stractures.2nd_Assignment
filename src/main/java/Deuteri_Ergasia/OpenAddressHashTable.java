@@ -1,18 +1,16 @@
 package Deuteri_Ergasia;
 
 //region Imports & Utils
-import com.sun.jdi.Value;
-
 import java.util.*;
 import static java.lang.String.valueOf;
 //endregion
 
-public class OpenAddressHashTable<K, V> implements Dictionary<K, V>, Dictionary.Entry<K, V> {
+public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
 
       //region Fields
       private static final int INITIAL_SIZE = 4;
       private int current_size;
-      private HashNode<K, V>[] HashTable;
+      private Entry<K, V>[] HashTable;
       int[][] BxUMatrix;
       //endregion
 
@@ -20,7 +18,7 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V>, Dictionary.
       @SuppressWarnings("unchecked")
       public OpenAddressHashTable() {
             this.current_size = 0;
-            this.HashTable = new HashNode[INITIAL_SIZE];
+            this.HashTable = new Entry[INITIAL_SIZE];
             this.BxUMatrix  = generateBxUMatrix();
       }
       //endregion
@@ -70,11 +68,11 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V>, Dictionary.
                   while (HashTable[i] != null) {
                         i = (i + 1) % HashTable.length;
                   }
-                  HashTable[i] = new HashNode<>(i, key, value);
+                  HashTable[i] = new Entry<>(i, key, value);
                   current_size++;
             }
 
-            if (isFull()) {doubleCapacity();}
+            if (current_size == HashTable.length) {changeCapacity("Double");}
       }
       //endregion
 
@@ -103,7 +101,7 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V>, Dictionary.
             HashTable[i] = null;
             current_size--;
 
-            if (isQuarterFilled()) {halfCapacity();}
+            if (current_size <= (HashTable.length / 4)) {changeCapacity("Half");}
 
             return temp;
       }
@@ -186,14 +184,6 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V>, Dictionary.
       public boolean isEmpty() {return (current_size == 0);}
       //endregion
 
-      //region isQuarterFilled
-      public boolean isQuarterFilled() {return (current_size <= (HashTable.length / 4));}
-      //endregion
-
-      //region isFull
-      public boolean isFull() {return (current_size == HashTable.length);}
-      //endregion
-
       //region size
       @Override
       public int size() {return current_size;}
@@ -201,47 +191,34 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V>, Dictionary.
 
       //region clear
       @Override
-      public void clear() {current_size = 0;}
-      //endregion
-
-      //region Iterator
-      @Override
-      public Iterator<Dictionary.Entry<K, V>> iterator() {
-            return null;
+      @SuppressWarnings("unchecked")
+      public void clear() {
+            current_size = 0;
+            HashTable = new Entry[INITIAL_SIZE];
+            BxUMatrix  = generateBxUMatrix();
       }
       //endregion
 
-      //region doubleCapacity
+      //region changeCapacity
       @SuppressWarnings("unchecked")
-      private void doubleCapacity() {
-            HashNode<K, V>[] oldHashTable = HashTable;
-            int newLength = (HashTable.length * 2);
-            HashTable = new HashNode[newLength];
-            current_size = 0;
+      private void changeCapacity(String action) {
+            Entry<K, V>[] oldHashTable = HashTable;
 
-            BxUMatrix = generateBxUMatrix();
-
-            for (HashNode<K, V> HashNode : oldHashTable) {
-                  if (HashNode != null) {
-                        put(HashNode.key, HashNode.value);
-                  }
+            int newLength = 0;
+            if (action.equals("Double")) {
+                  newLength = (HashTable.length * 2);
+            } else if (action.equals("Half")) {
+                  newLength = (HashTable.length / 2);
             }
-      }
-      //endregion
 
-      //region halfCapacity
-      @SuppressWarnings("unchecked")
-      private void halfCapacity() {
-            HashNode<K, V>[] oldHashTable = HashTable;
-            int newLength = (HashTable.length / 2);
-            HashTable = new HashNode[newLength];
+            HashTable = new Entry[newLength];
             current_size = 0;
 
             BxUMatrix = generateBxUMatrix();
 
-            for (HashNode<K, V> hashNode : oldHashTable) {
-                  if (hashNode != null) {
-                        put(hashNode.key, hashNode.value);
+            for (Entry<K, V> Entry : oldHashTable) {
+                  if (Entry != null) {
+                        put(Entry.key, Entry.value);
                   }
             }
       }
@@ -249,85 +226,37 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V>, Dictionary.
 
       //region printHashTable
       public void printHashTable() {
-            for (HashNode<K, V> Node : this.HashTable) {
-                  if (Node == null) {
+            for (Entry<K, V> Entry : this.HashTable) {
+                  if (Entry == null) {
                         System.out.print("null ");
                   } else {
-                        System.out.print(Node.key.toString() + ":" + Node.value.toString() + " ");
+                        System.out.print(Entry.getKey().toString() + ":" + Entry.getValue().toString() + " ");
                   }
             }
             System.out.println();
       }
 
-      @Override
-      public K getKey() {
-            return null;
-      }
-
-      @Override
-      public V getValue() {
-            return null;
-      }
-      //endregion
-
-      //region HashNode
-      static class HashNode<K, V> {
-            final int hash;
-            K key;
-            V value;
-
-            HashNode(int hash, K key, V value) {
-                  this.hash = hash;
-                  this.key = key;
-                  this.value = value;
-            }
-      }
       //endregion
       //endregion
 
       //region "Entry" Class
-      private static class Entry<K, V> implements Dictionary.Entry<K, V> {
+      static class Entry<K, V> implements Dictionary.Entry<K, V> {
 
-            private K key;
-            private V value;
+            final int hash;
+            K key;
+            V value;
 
-            public Entry(K key, V value) {
+            public Entry(int hash, K key, V value) {
+                  this.hash = hash;
                   this.key = key;
                   this.value = value;
             }
 
             @Override
-            public K getKey() {
-                  return key;
-            }
+            public K getKey() {return key;}
 
             @Override
-            public V getValue() {
-                  return value;
-            }
-      }
-      //endregion
-
-      //region "HashIterator" Class
-      private class HashIterator implements Iterator<Entry<K, V>> {
-
-            private int i;
-            private Iterator<Entry<K, V>> it;
-
-            public HashIterator() {
-                  i = 0;
-                  //it = HashTable[0].iterator();
-            }
-
-            @Override
-            public boolean hasNext() {
-                  return false;
-            }
-
-            @Override
-            public Entry<K, V> next() {
-                  return null;
-            }
+            public V getValue() {return value;}
       }
       //endregion
 }

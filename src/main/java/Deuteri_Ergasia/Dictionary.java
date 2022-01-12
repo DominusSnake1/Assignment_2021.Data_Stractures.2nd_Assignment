@@ -1,8 +1,6 @@
 package Deuteri_Ergasia;
 
-import java.util.Iterator;
-
-public interface Dictionary<K, V> extends Iterable<Dictionary.Entry<K, V>> {
+public interface Dictionary<K, V> {
       
       void put(K key, V value);
 
@@ -17,8 +15,6 @@ public interface Dictionary<K, V> extends Iterable<Dictionary.Entry<K, V>> {
       int size();
 
       void clear();
-
-      Iterator<Entry<K, V>> iterator();
 
       interface Entry<K, V> {
             K getKey();
