@@ -35,38 +35,35 @@ public class OpenAddressHashTableTest {
 
             assertTrue(HashMap.isEmpty());
 
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 200; i++) {
                   HashMap.put(i, (i+1));
             }
 
             int PreviousLength = HashMap.getLength();
 
-            for (int i = 100; i < 200; i++) {
+            for (int i = 100; i < 400; i++) {
                   HashMap.put(i, (i+1));
             }
 
-            int PreviousSize = HashMap.size();
             assertEquals(HashMap.getLength(), (PreviousLength * 2));
-            assertFalse(HashMap.isEmpty());
-            assertNotSame(HashMap.size(), HashMap.getLength());
-
             PreviousLength = HashMap.getLength();
-
-            for (int i = 200; i < 400; i++) {
-                  HashMap.put(i, (i+1));
-            }
-
-            assertNotSame(HashMap.size(), 0);
-
-            HashMap.printHashTable();
-
-            for (int i = 0; i < 400; i++) {
+            assertEquals(HashMap.size(),400);
+            for (int i = 0; i < 300; i++) {
                   HashMap.remove(i);
             }
+            assertEquals(HashMap.size(),100);
+            assertEquals(HashMap.getLength(),(PreviousLength/2));
+            for(int i = 300; i<400 ; i++)
+            {
+                  HashMap.remove(i);
+            }
+            assertTrue(HashMap.isEmpty());
       }
 
       @Test
       public void Test3() {
             OpenAddressHashTable<Integer, Integer> HashMap = new OpenAddressHashTable<>();
+
+
       }
 }

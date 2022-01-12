@@ -120,7 +120,6 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
                   if (HashTable[i] == null) {
                         i++;
                   } else {
-                        System.out.println(HashTable[i].getKey());
                         if (HashTable[i].getKey().equals(key)) {
                               return HashTable[i].getValue();
                         } else {
