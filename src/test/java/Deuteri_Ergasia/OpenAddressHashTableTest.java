@@ -69,10 +69,6 @@ public class OpenAddressHashTableTest {
 
             String sentence;
 
-            HashMap.printHashTable();
-
-            System.out.println("Current size: " + HashMap.size());
-
             while ((sentence = reader.readLine()) != null) {
                   sentence = sentence.toLowerCase();
                   String[] words = sentence.split("\\W");
