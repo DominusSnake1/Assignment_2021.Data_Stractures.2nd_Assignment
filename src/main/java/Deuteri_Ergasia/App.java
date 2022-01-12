@@ -13,6 +13,7 @@ public class App {
             String sentence;
 
             Hash.printHashTable();
+
             System.out.println("Current size: " + Hash.size());
 
             while ((sentence = reader.readLine()) != null) {

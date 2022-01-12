@@ -4,7 +4,8 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Random;
-import static org.testng.AssertJUnit.assertTrue;
+
+import static org.testng.AssertJUnit.*;
 
 public class OpenAddressHashTableTest {
 
@@ -24,17 +25,48 @@ public class OpenAddressHashTableTest {
             }
 
             for (Integer v : values) {
-                  assertTrue(HashMap.get(v) == (v + 1));
+                  assertEquals((int) HashMap.get(v), (v + 1));
             }
       }
 
       @Test
-      public void Test2() {
+      public void Test2() throws Exception {
+            OpenAddressHashTable<Integer, Integer> HashMap = new OpenAddressHashTable<>();
 
+            assertTrue(HashMap.isEmpty());
+
+            for (int i = 0; i < 100; i++) {
+                  HashMap.put(i, (i+1));
+            }
+
+            int PreviousLength = HashMap.getLength();
+
+            for (int i = 100; i < 200; i++) {
+                  HashMap.put(i, (i+1));
+            }
+
+            int PreviousSize = HashMap.size();
+            assertEquals(HashMap.getLength(), (PreviousLength * 2));
+            assertFalse(HashMap.isEmpty());
+            assertNotSame(HashMap.size(), HashMap.getLength());
+
+            PreviousLength = HashMap.getLength();
+
+            for (int i = 200; i < 400; i++) {
+                  HashMap.put(i, (i+1));
+            }
+
+            assertNotSame(HashMap.size(), 0);
+
+            HashMap.printHashTable();
+
+            for (int i = 0; i < 400; i++) {
+                  HashMap.remove(i);
+            }
       }
 
       @Test
       public void Test3() {
-
+            OpenAddressHashTable<Integer, Integer> HashMap = new OpenAddressHashTable<>();
       }
 }

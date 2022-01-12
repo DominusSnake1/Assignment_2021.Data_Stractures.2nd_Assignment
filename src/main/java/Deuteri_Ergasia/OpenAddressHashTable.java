@@ -50,7 +50,7 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
 
             String Index = temp.toString();
 
-            return (binaryStringToInteger(Index) % HashTable.length);
+            return (binaryStringToInteger(Index) % getLength());
       }
       //endregion
 
@@ -61,18 +61,18 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
 
             if (contains(key)) {
                   while (!(HashTable[i].key.equals(key))) {
-                        i = (i + 1) % HashTable.length;
+                        i = (i + 1) % getLength();
                   }
                   HashTable[i].value = value;
             } else {
                   while (HashTable[i] != null) {
-                        i = (i + 1) % HashTable.length;
+                        i = (i + 1) % getLength();
                   }
                   HashTable[i] = new Entry<>(i, key, value);
                   current_size++;
             }
 
-            if (current_size == HashTable.length) {changeCapacity("Double");}
+            if (current_size == getLength()) {changeCapacity("Double");}
       }
       //endregion
 
@@ -84,24 +84,28 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
             }
 
             if (!contains(key)) {
-                  throw new Exception("No value for this key!");
-            }
-
-            int i = newHashFunction(key);
-            while (HashTable[i] == null) {
-                  i = (i + 1) % HashTable.length;
-            }
-
-            while (!key.equals(HashTable[i].key)) {
-                  i = (i + 1) % HashTable.length;
+                  throw new Exception("No value for key -> " + key);
             }
 
             V temp = get(key);
 
-            HashTable[i] = null;
+            int i = 0;
+            while (i < getLength()) {
+                  if (HashTable[i] == null) {
+                        i++;
+                  } else {
+                        if (HashTable[i].getKey().equals(key)) {
+                              HashTable[i] = null;
+                              break;
+                        } else {
+                              i++;
+                        }
+                  }
+            }
+
             current_size--;
 
-            if (current_size <= (HashTable.length / 4)) {changeCapacity("Half");}
+            if (current_size <= (getLength() / 4)) {changeCapacity("Half");}
 
             return temp;
       }
@@ -110,26 +114,27 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
       //region get
       @Override
       public V get(K key) {
-            int i = newHashFunction(key);
+            int i = 0;
 
-            if (!isEmpty()){
-                  while (HashTable[i] == null) {
-                        i = (i + 1) % HashTable.length;
+            while (i < getLength()) {
+                  if (HashTable[i] == null) {
+                        i++;
+                  } else {
+                        System.out.println(HashTable[i].getKey());
+                        if (HashTable[i].getKey().equals(key)) {
+                              return HashTable[i].getValue();
+                        } else {
+                              i++;
+                        }
                   }
             }
 
-            while (HashTable[i] != null) {
-                  if (HashTable[i].key.equals(key)) {
-                        return HashTable[i].value;
-                  }
-                  i = (i + 1) % HashTable.length;
-            }
             return null;
       }
       //endregion
 
       //region keyToBinaryString
-      public String keyToBinaryString(K key) {return (Integer.toBinaryString((key.hashCode())));}
+      public String keyToBinaryString(K key) {return (Integer.toBinaryString(key.hashCode()));}
       //endregion
 
       //region binaryStringToInteger
@@ -197,6 +202,10 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
             HashTable = new Entry[INITIAL_SIZE];
             BxUMatrix  = generateBxUMatrix();
       }
+      //endregion
+
+      //region getLength
+      public int getLength() {return HashTable.length;}
       //endregion
 
       //region changeCapacity
