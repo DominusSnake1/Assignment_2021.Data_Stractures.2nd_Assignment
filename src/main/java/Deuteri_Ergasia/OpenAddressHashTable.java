@@ -84,7 +84,7 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
             }
 
             if (!contains(key)) {
-                  throw new Exception("No value for key -> " + key);
+                  throw new Exception("This key doesn't exist in the HashTable -> " + key);
             }
 
             V temp = get(key);
@@ -116,17 +116,17 @@ public class OpenAddressHashTable<K, V> implements Dictionary<K, V> {
       public V get(K key) {
             int i = 0;
 
-            while (i < getLength()) {
-                  if (HashTable[i] == null) {
-                        i++;
-                  } else {
-                        if (HashTable[i].getKey().equals(key)) {
-                              return HashTable[i].getValue();
-                        } else {
+                  while (i < getLength()) {
+                        if (HashTable[i] == null) {
                               i++;
+                        } else {
+                              if (HashTable[i].getKey().equals(key)) {
+                                    return HashTable[i].getValue();
+                              } else {
+                                    i++;
+                              }
                         }
                   }
-            }
 
             return null;
       }

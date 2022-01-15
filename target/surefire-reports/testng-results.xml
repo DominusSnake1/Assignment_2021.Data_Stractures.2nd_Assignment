@@ -2,20 +2,20 @@
 <testng-results ignored="0" total="3" passed="3" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2022-01-12T17:34:09 EET" name="Surefire suite" finished-at="2022-01-12T17:34:09 EET" duration-ms="90">
+  <suite started-at="2022-01-15T21:54:10 EET" name="Surefire suite" finished-at="2022-01-15T21:54:10 EET" duration-ms="80">
     <groups>
     </groups>
-    <test started-at="2022-01-12T17:34:09 EET" name="Surefire test" finished-at="2022-01-12T17:34:09 EET" duration-ms="90">
+    <test started-at="2022-01-15T21:54:10 EET" name="Surefire test" finished-at="2022-01-15T21:54:10 EET" duration-ms="80">
       <class name="Deuteri_Ergasia.OpenAddressHashTableTest">
-        <test-method signature="Test1()[pri:0, instance:Deuteri_Ergasia.OpenAddressHashTableTest@365c30cc]" started-at="2022-01-12T17:34:09 EET" name="Test1" finished-at="2022-01-12T17:34:09 EET" duration-ms="64" status="PASS">
+        <test-method signature="Test1()[pri:0, instance:Deuteri_Ergasia.OpenAddressHashTableTest@6b67034]" started-at="2022-01-15T21:54:10 EET" name="Test1" finished-at="2022-01-15T21:54:10 EET" duration-ms="43" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Test1 -->
-        <test-method signature="Test2()[pri:0, instance:Deuteri_Ergasia.OpenAddressHashTableTest@365c30cc]" started-at="2022-01-12T17:34:09 EET" name="Test2" finished-at="2022-01-12T17:34:09 EET" duration-ms="0" status="PASS">
+        <test-method signature="Test2()[pri:0, instance:Deuteri_Ergasia.OpenAddressHashTableTest@6b67034]" started-at="2022-01-15T21:54:10 EET" name="Test2" finished-at="2022-01-15T21:54:10 EET" duration-ms="5" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Test2 -->
-        <test-method signature="Test3()[pri:0, instance:Deuteri_Ergasia.OpenAddressHashTableTest@365c30cc]" started-at="2022-01-12T17:34:09 EET" name="Test3" finished-at="2022-01-12T17:34:09 EET" duration-ms="0" status="PASS">
+        <test-method signature="Test3()[pri:0, instance:Deuteri_Ergasia.OpenAddressHashTableTest@6b67034]" started-at="2022-01-15T21:54:10 EET" name="Test3" finished-at="2022-01-15T21:54:10 EET" duration-ms="7" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Test3 -->

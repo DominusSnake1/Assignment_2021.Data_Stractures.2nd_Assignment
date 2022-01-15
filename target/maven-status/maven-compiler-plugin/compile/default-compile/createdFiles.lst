@@ -1,7 +1,5 @@
+Deuteri_Ergasia\App.class
 Deuteri_Ergasia\Dictionary$Entry.class
 Deuteri_Ergasia\OpenAddressHashTable.class
-Deuteri_Ergasia\OpenAddressHashTable$Entry.class
-Deuteri_Ergasia\OpenAddressHashTable$HashNode.class
-Deuteri_Ergasia\App.class
-Deuteri_Ergasia\OpenAddressHashTable$HashIterator.class
 Deuteri_Ergasia\Dictionary.class
+Deuteri_Ergasia\OpenAddressHashTable$Entry.class
