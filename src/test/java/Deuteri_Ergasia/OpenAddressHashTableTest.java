@@ -48,8 +48,16 @@ public class OpenAddressHashTableTest {
 
             assertEquals(HashMap.getLength(), (PreviousLength * 2));
             PreviousLength = HashMap.getLength();
-            assertEquals(HashMap.size(),400);
-            for (int i = 0; i < 300; i++) {
+
+            int PreviousSize = HashMap.size();
+            assertEquals(PreviousSize,400);
+
+            for (int i = 0; i < 100; i++) {
+                  HashMap.remove(i);
+            }
+            assertFalse(HashMap.size() == PreviousSize/4);
+            assertEquals(HashMap.getLength() , PreviousLength);
+            for (int i = 100; i < 300; i++) {
                   HashMap.remove(i);
             }
             assertEquals(HashMap.size(),100);
